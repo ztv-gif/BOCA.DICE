@@ -117,6 +117,22 @@ YA SEA EN UNA ACCIÓN DE CONTRATO, AGRAVIO O CUALQUIER OTRA FORMA, QUE SURJA DEL
         <h3>Refuerzo en la defensa</h3>
         <p>Boca oficializó la llegada de un nuevo central para reforzar el plantel de cara al torneo internacional.</p>
       </div>
+      <!-- Formulario para agregar noticias -->
+<section>
+  <h2>Agregar noticia</h2>
+  <form id="formNoticia">
+    <input type="text" id="titulo" placeholder="Título de la noticia" required>
+    <input type="file" id="imagen" accept="image/*">
+    <textarea id="descripcion" rows="3" placeholder="Descripción de la noticia" required></textarea>
+    <button type="submit">Agregar noticia</button>
+  </form>
+</section>
+
+<!-- Sección donde se mostrarán las noticias -->
+<section>
+  <h2>Noticias</h2>
+  <div id="contenedorNoticias"></div>
+</section>
     </section>
 
     <!-- Sección de próximos partidos -->
@@ -146,7 +162,40 @@ YA SEA EN UNA ACCIÓN DE CONTRATO, AGRAVIO O CUALQUIER OTRA FORMA, QUE SURJA DEL
       </div>
     </section>
   </main>
+<script>
+const form = document.getElementById('formNoticia');
+const contenedor = document.getElementById('contenedorNoticias');
 
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const titulo = document.getElementById('titulo').value;
+  const descripcion = document.getElementById('descripcion').value;
+  const imagenInput = document.getElementById('imagen');
+  const archivo = imagenInput.files[0];
+
+  const div = document.createElement('div');
+  div.classList.add('noticia');
+
+  if (archivo) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      div.innerHTML = `
+        <img src="${event.target.result}" alt="${titulo}">
+        <h3>${titulo}</h3>
+        <p>${descripcion}</p>
+      `;
+      contenedor.prepend(div);
+    }
+    reader.readAsDataURL(archivo);
+  } else {
+    div.innerHTML = `<h3>${titulo}</h3><p>${descripcion}</p>`;
+    contenedor.prepend(div);
+  }
+
+  form.reset();
+});
+</script>
   <footer>
     <p>© 2025 Boca Dice - Sitio de noticias no oficial</p>
   </footer>
